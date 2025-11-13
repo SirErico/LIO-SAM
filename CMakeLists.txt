@@ -32,6 +32,7 @@ find_package(Eigen REQUIRED)
 find_package(OpenMP REQUIRED)
 
 include_directories(
+  include
   include/lio_sam
 )
 

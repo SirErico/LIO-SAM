@@ -44,6 +44,10 @@ def generate_launch_description():
             executable='lio_sam_imuPreintegration',
             name='lio_sam_imuPreintegration',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
@@ -51,6 +55,10 @@ def generate_launch_description():
             executable='lio_sam_imageProjection',
             name='lio_sam_imageProjection',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
@@ -58,6 +66,10 @@ def generate_launch_description():
             executable='lio_sam_featureExtraction',
             name='lio_sam_featureExtraction',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
@@ -65,6 +77,10 @@ def generate_launch_description():
             executable='lio_sam_mapOptimization',
             name='lio_sam_mapOptimization',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
