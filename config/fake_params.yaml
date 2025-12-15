@@ -10,7 +10,7 @@
     # Frames
     lidarFrame: "lidar3d_0_laser"
     baselinkFrame: "base_link"
-    odometryFrame: "odom"
+    odometryFrame: "base_link"
     mapFrame: "map"
 
     # GPS Settings
