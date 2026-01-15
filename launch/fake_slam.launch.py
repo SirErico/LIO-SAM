@@ -47,7 +47,7 @@ def launch_setup(context, *args, **kwargs):
     params_declare = DeclareLaunchArgument(
         'params_file',
         default_value=os.path.join(
-            share_dir, 'config', 'params.yaml'),
+            share_dir, 'config', 'fake_params.yaml'),
         description='FPath to the ROS2 parameters file to use.')
 
     # Launch Configurations
@@ -88,6 +88,7 @@ def launch_setup(context, *args, **kwargs):
         params_declare,
         bridge_node,
         tf_broadcast,
+        # TF relay is now handled by tf_broadcast.py
         # Node(
         #     package='tf2_ros',
         #     executable='static_transform_publisher',
@@ -95,27 +96,36 @@ def launch_setup(context, *args, **kwargs):
         #     parameters=[parameter_file],
         #     output='screen'
         #     ),
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[{
-                'robot_description': Command(['xacro', ' ', xacro_path])
-            }]
-        ),
-        Node(
-            package='lio_sam',
-            executable='lio_sam_imuPreintegration',
-            name='lio_sam_imuPreintegration',
-            parameters=[parameter_file],
-            output='screen'
-        ),
+        # Robot state publisher not needed - robot already publishes its own TF
+        # Node(
+        #     package='robot_state_publisher',
+        #     executable='robot_state_publisher',
+        #     name='robot_state_publisher',
+        #     output='screen',
+        #     parameters=[{
+        #         'robot_description': Command(['xacro', ' ', xacro_path])
+        #     }]
+        # ),
+        # Node(
+        #     package='lio_sam',
+        #     executable='lio_sam_imuPreintegration',
+        #     name='lio_sam_imuPreintegration',
+        #     parameters=[parameter_file],
+        #     remappings=[
+        #         ('/tf', '/j100_0000/tf'),
+        #         ('/tf_static', '/j100_0000/tf_static'),
+        #     ],
+        #     output='screen'
+        # ),
         Node(
             package='lio_sam',
             executable='lio_sam_imageProjection',
             name='lio_sam_imageProjection',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
@@ -123,6 +133,10 @@ def launch_setup(context, *args, **kwargs):
             executable='lio_sam_featureExtraction',
             name='lio_sam_featureExtraction',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
@@ -130,6 +144,10 @@ def launch_setup(context, *args, **kwargs):
             executable='lio_sam_mapOptimization',
             name='lio_sam_mapOptimization',
             parameters=[parameter_file],
+            remappings=[
+                ('/tf', '/j100_0000/tf'),
+                ('/tf_static', '/j100_0000/tf_static'),
+            ],
             output='screen'
         ),
         Node(
